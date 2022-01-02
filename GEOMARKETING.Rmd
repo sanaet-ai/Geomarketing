@@ -4,7 +4,7 @@ author: "Santonu  Debnath"
 date: "01/01/2022"
 output: html_document
 ---
-#STARTING
+#Loading required library
 
 ```{r}
 library(pacman)
@@ -18,7 +18,7 @@ data=spDataLarge::census_de
 summary(data)
 ```
 #
-#Data_set_creation
+#Data_set_creation/reclassification based on req
 ```{r}
 
 data=mutate_all(data,list(~ifelse(. %in% c(-1, -9), NA, .)))
@@ -38,7 +38,7 @@ plot(geo_market)
 
 ```
 #
-#RE_CLASSIFICATION OF LAYERS BASED ON REQ
+#RE_CLASSIFICATION OF LAYERS BASED ON Req
 ```{r}
 
 re_Pop=matrix(c(1, 1, 127, 2, 2, 375, 3, 3, 1250,
@@ -110,30 +110,8 @@ plot(metro_city_1)
 class(coordinae)
 
 ```
-
 #
-#Visualization map
-#
-#tmap_view
-```{r}
-tmap_mode("view")
-
-qtm(coordinae,fill="IMPORTANT_LOCATIONS",text.size = "AREA")+
-  tm_grid()+
-  tm_graticules()+
-  tm_layout()+
-  tmap_options(qtm.minimap = FALSE,show.messages =FALSE)+
-  tm_style("gray")+
-  tm_minimap(position =c("right","top"))+
-  tm_mouse_coordinates()+
-  tm_scale_bar(text.size = 2,text.color = "green",
-                color.dark = "black",
-                color.light = "white")+
-  tm_xlab("Longitude")+
-  tm_ylab("latitude")
-
-```
-
+#Visualization map on tmap_leaflet
 #
 #TMAP_LEAFLET
 ```{r}
@@ -152,30 +130,8 @@ m1=tm_shape(coordinae)+
 lf <- tmap_leaflet(m1)
 # show leaflet widget
 lf
-
-
 ```
-#
-#ONLY WITH LEAFLET
-```{r}
-coordinae %>% 
-  leaflet() %>% 
-  addTiles()  %>% 
-  addProviderTiles(provider ="Esri.OceanBasemap",group ="OceanBasemap") %>% 
-  addLayersControl(baseGroups = c("OpenStreetMap", "Toner by Stamen","HERE.normalDay"),
-                  overlayGroups = c("Markers")) %>% 
-  addControl(position =c("topleft"),html = "IMPORTANT AREAS") %>% 
-  #addMarkers() %>%
-  addLabelOnlyMarkers() %>% 
-  # addCircles(radius = 2000,
-  #            group = c("normalDay","OceanBasemap"),
-  #            label = d1$d1,
-  #            opacity = 0.7,
-  #            color = "red"
-  #            )+
-  addCircleMarkers(opacity = 0.7,color = "red") 
-
-```
+#########################################################
 
 
 
